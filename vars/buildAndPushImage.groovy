@@ -1,10 +1,7 @@
 #!/usr/bin/env groovy
 
+import com.example.Docker
+
 def call(String imageName, String repoLocation) {
-    echo "building the docker image..."
-    withCredentials([usernamePassword(credentialsId: 'nexus-my-docker-hostedrepo', passwordVariable: 'PWD', usernameVariable: 'USER')]) {
-        sh "docker build -t $imageName ."
-        sh "echo $PWD | docker login -u $USER --password-stdin $repoLocation"
-        sh 'docker push $IMAGE'
-    }
+    return new Docker(this).buildDockerImage(imageName, repoLocation)
 }
