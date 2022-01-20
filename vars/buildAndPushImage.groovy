@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-def call(string imageName, string repoLocation) {
+def call(String imageName, String repoLocation) {
     echo "building the docker image..."
     withCredentials([usernamePassword(credentialsId: 'nexus-my-docker-hostedrepo', passwordVariable: 'PWD', usernameVariable: 'USER')]) {
         sh "docker build -t $imageName ."
