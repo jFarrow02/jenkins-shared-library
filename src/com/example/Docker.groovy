@@ -9,12 +9,18 @@ class Docker implements Serializable { // supports saving state if pipeline is p
         this.script = script
     }
 
-    def buildDockerImage(String imageName, String repoLocation) {
+    def buildDockerImage(String imageName) {
         script.echo "building the docker image..."
-        script.withCredentials([script.usernamePassword(credentialsId:    'nexus-my-docker-hostedrepo', passwordVariable: 'PWD',     usernameVariable: 'USER')]) {
-            script.sh "docker build -t $imageName ."
+        script.sh "docker build -t $imageName ."
+    }
+
+    def dockerLogin(String repoLocation) {
+        script.withCredentials([script.usernamePassword(credentialsId: 'nexus-my-docker-hostedrepo', passwordVariable: 'PWD', usernameVariable: 'USER')]) {
             script.sh "echo $script.PWD | docker login -u $script.USER --password-stdin  $repoLocation"
-            script.sh "docker push $imageName"
         }
+    }
+
+    def dockerPush(String imageName) {
+        script.sh "docker push $imageName"
     }
 }
