@@ -14,7 +14,7 @@ class Docker implements Serializable { // supports saving state if pipeline is p
         script.withCredentials([script.usernamePassword(credentialsId:    'nexus-my-docker-hostedrepo', passwordVariable: 'PWD',     usernameVariable: 'USER')]) {
             script.sh "docker build -t $imageName ."
             script.sh "echo $script.PWD | docker login -u $script.USER --password-stdin  $repoLocation"
-            script.sh 'docker push $imageName'
+            script.sh "docker push $imageName"
         }
     }
 }
